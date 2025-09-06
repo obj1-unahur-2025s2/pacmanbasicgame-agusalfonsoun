@@ -6,13 +6,42 @@ program pacmanGame {
 	// límites del juego
 	game.width(14)
 	game.height(8)
+  game.cellSize(50)
+  game.title('Pacman')
 	
 	// fondo
 	game.boardGround("pacmanBackground.jpg")
 	
 	// personaje principal
-	game.addVisualCharacter(pacman)
+  //Con addVisual se agrega algo visual puede ser un bloque-enemigo-personaje,
+  //con addVisualCharacter se agrega el personaje que ya tiene la limitacion del tablero.
+	game.addVisual(pacman)
 	
+  //Al presionar una tecla
+  // keyboard.y().onPressDo({
+  //   game.say(pacman, "estas apretando la y")
+  //   pacman.position(game.center())
+  //   })
+  keyboard.w().onPressDo({
+    pacman.position(pacman.position().up(1))
+  })
+
+  keyboard.s().onPressDo({
+    pacman.position(pacman.position().down(1))
+  })
+
+  keyboard.d().onPressDo({
+    pacman.position(pacman.position().right(1))
+  })
+
+  keyboard.a().onPressDo({
+    pacman.position(pacman.position().left(1))
+  })
+
+  keyboard.space().onPressDo({
+    pacman.cambiarSkin('Minecraft.png')
+  })
+
 	// que arranque el juego!
 	game.start()
 	

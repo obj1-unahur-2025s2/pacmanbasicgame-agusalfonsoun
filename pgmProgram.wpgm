@@ -2,7 +2,8 @@ import wollok.game.*
 import example.*
 
 program pacmanGame {
-	
+  const rivales = [fantasmaRojo, fantasmaAzul]
+
 	game.title("Pacman!")
 	
 	// límites del juego
@@ -13,12 +14,18 @@ program pacmanGame {
 	game.boardGround("pacmanBackground.jpg")
 	
 	// personaje principal
-	game.addVisualCharacter(pacman)
+	game.addVisual(pacman)
 	
+  keyboard.w().onPressDo({pacman.moverseHaciaArriba()})
+  keyboard.s().onPressDo({pacman.moverseHaciaAbajo()})
+  keyboard.a().onPressDo({pacman.moverseHaciaIzquierda()})
+  keyboard.d().onPressDo({pacman.moverseHaciaDerecha()})
 
 	// rivales
-	const rivales = [new Rival(numero = 1), new Rival(numero = 2)]
+	//const rivales = [new Rival(numero = 1), new Rival(numero = 2)]
 	
+
+  /*
 	rivales.forEach { rival => 
 		game.addVisual(rival)
 		game.whenCollideDo(rival, { personaje =>
@@ -29,7 +36,23 @@ program pacmanGame {
 				game.onTick(5000, "gameEnd", { game.stop() })
 			}
 		})
-	}
+	}*/
+
+  game.addVisual(fantasmaRojo)
+  game.addVisual(fantasmaAzul)
+
+  rivales.forEach({
+    rival => game.whenCollideDo(rival, {
+      personaje =>
+      personaje.perderVida()
+      game.say(personaje, "Me quedan vidas :" + personaje.vidas())
+      if (personaje.juegoTerminado()) {
+        game.say(personaje, "Se terminaron las vidas!!!")
+        game.stop()
+      }
+    })
+  })
+
 	
 	// que arranque el juego!
 	game.start()
